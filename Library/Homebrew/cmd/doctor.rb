@@ -85,7 +85,7 @@ def check_for_nonstandard_x11
       "/usr/X11" was found, but it is a symlink to:
         #{x11.resolved_path}
 
-      Homebrew's X11 support has only be tested with Apple's X11.
+      Homebrew's X11 support has only been tested with Apple's X11.
       In particular, "XQuartz" and "XDarwin" are not known to be compatible.
 
     EOS
@@ -140,7 +140,7 @@ def check_cc_symlink
     which_cc = Pathname.new('/usr/bin/cc').realpath.basename.to_s
     if which_cc == "llvm-gcc-4.2"
       puts <<-EOS.undent
-        You changed your cc to symlink to llvm.
+        Your "/usr/bin/cc" is symlinked to llvm.
         This bypasses LLVM checks, and some formulae may mysteriously fail to work.
         You may want to change /usr/bin/cc to point back at gcc.
 
@@ -402,7 +402,9 @@ def check_for_config_scripts
 
   paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
   paths.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', 
+      "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
 
     configs = Dir["#{p}/*-config"]
@@ -412,13 +414,16 @@ def check_for_config_scripts
 
   unless config_scripts.empty?
     puts <<-EOS.undent
-      Some "config" scripts were found in your path, but not in system or Homebrew folders.
+      Some "config" scripts were found in your path, but not in system or Homebrew
+      folders.
 
-      `./configure` scripts often look for *-config scripts to determine if software packages
-      are installed, and what additional flags to use when compiling and linking.
+      `./configure` scripts often look for *-config scripts to determine if software
+      packages are installed, and what additional flags to use when compiling and
+      linking.
 
-      Having additional scripts in your path can confuse software installed via Homebrew if
-      the config script overrides a system or Homebrew provided script of the same name.
+      Having additional scripts in your path can confuse software installed via
+      Homebrew if the config script overrides a system or Homebrew provided script
+      of the same name.
 
     EOS
 
@@ -433,7 +438,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
@@ -444,8 +449,10 @@ def check_for_symlinked_cellar
   if HOMEBREW_CELLAR.symlink?
     puts <<-EOS.undent
       Symlinked Cellars can cause problems.
-      Your Homebrew Cellar is a symlink: #{HOMEBREW_CELLAR}
-                      which resolves to: #{HOMEBREW_CELLAR.realpath}
+      Your Homebrew Cellar is a symlink:
+        #{HOMEBREW_CELLAR}
+      which resolves to:
+        #{HOMEBREW_CELLAR.realpath}
 
       The recommended Homebrew installations are either:
       (A) Have Cellar be a real folder inside of your HOMEBREW_PREFIX
@@ -466,7 +473,7 @@ def check_for_multiple_volumes
   real_cellar = HOMEBREW_CELLAR.realpath
 
   tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
+  tmp = Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
