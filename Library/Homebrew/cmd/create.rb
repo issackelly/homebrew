@@ -49,34 +49,6 @@ module Homebrew extend self
     gots = $stdin.gets.chomp
     if gots.empty? then nil else gots end
   end
-
-  def blacklisted? name
-    case name.downcase
-    when 'vim', 'screen' then <<-EOS.undent
-      #{name} is blacklisted for creation
-      Apple distributes this program with OS X.
-      EOS
-    when 'libarchive', 'libpcap' then <<-EOS.undent
-      #{name} is blacklisted for creation
-      Apple distributes this library with OS X, you can find it in /usr/lib.
-      EOS
-    when 'libxml', 'libxlst', 'freetype', 'libpng' then <<-EOS.undent
-      #{name} is blacklisted for creation
-      Apple distributes this library with OS X, you can find it in /usr/X11/lib.
-      However not all build scripts look here, so you may need to call ENV.x11 or
-      ENV.libxml2 in your formula's install function.
-      EOS
-    when /^rubygems?$/
-      "Sorry RubyGems comes with OS X so we don't package it."
-    when 'wxwidgets' then <<-EOS.undent
-      #{name} is blacklisted for creation
-      An older version of wxWidgets is provided by Apple with OS X, but
-      a formula for wxWidgets 2.8.10 is provided:
-
-      brew install wxmac
-      EOS
-    end
-  end
 end
 
 class FormulaCreator
