@@ -152,7 +152,7 @@ def install f
     paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
-        rootbin = (HOMEBREW_PREFIX/bin.basename).to_s
+        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
         bin = File.expand_path bin
         unless paths.include? rootbin
           opoo "#{rootbin} is not in your PATH"
@@ -163,7 +163,7 @@ def install f
     end
 
     # Check for man pages that aren't in share/man
-    if (f.prefix/:man).exist?
+    if (f.prefix+'man').exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
