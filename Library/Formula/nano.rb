@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nano <Formula
-  url 'http://www.nano-editor.org/dist/v2.2/nano-2.2.5.tar.gz'
+  url 'http://www.nano-editor.org/dist/v2.2/nano-2.2.6.tar.gz'
   homepage 'http://www.nano-editor.org/'
-  md5 '77a10a49589f975ce98350a4527a2ebf'
+  md5 '03233ae480689a008eb98feb1b599807'
 
   depends_on 'ncursesw'
 
