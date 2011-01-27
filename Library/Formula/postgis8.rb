@@ -15,7 +15,6 @@ class Postgis8 <Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
-  depends_on 'postgresql8'
   depends_on 'proj'
   depends_on 'geos'
 
